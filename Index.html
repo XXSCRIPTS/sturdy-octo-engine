@@ -3,141 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARKZ | WINDUI V16</title>
+    <title>DARKZ | WINDUI V17 EXECUTIVE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono&display=swap');
         
-        :root { --accent: #ff0000; --bg-main: #050505; --panel: #0a0a0a; }
-        body { background: var(--bg-main); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh; overflow: hidden; margin: 0; }
+        :root { --accent: #ff0000; --bg: #030303; --glass: rgba(255, 255, 255, 0.03); }
+        body { background: var(--bg); color: #fff; font-family: 'Space Grotesk', sans-serif; height: 100vh; overflow: hidden; margin: 0; }
 
-        /* --- THE BLACKHOLE --- */
-        @keyframes suck { 0% { transform: scale(1) rotate(0); opacity: 1; } 100% { transform: scale(0) rotate(720deg); opacity: 0; } }
-        .deleting { animation: suck 1s forwards cubic-bezier(0.5, -0.5, 0.1, 1.5); }
-        .hole { position: fixed; width: 100px; height: 100px; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); border-radius: 50%; z-index: 9999; transform: translate(-50%, -50%); pointer-events: none; mix-blend-mode: screen; }
+        /* --- BLACKHOLE SYSTEM --- */
+        @keyframes suck { 0% { transform: scale(1) rotate(0); opacity: 1; filter: brightness(1); } 100% { transform: scale(0) rotate(720deg); opacity: 0; filter: brightness(5); } }
+        .deleting { animation: suck 0.8s forwards cubic-bezier(0.5, -0.5, 0.1, 1.5); }
+        .hole { position: fixed; width: 150px; height: 150px; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); border-radius: 50%; z-index: 9999; transform: translate(-50%, -50%); pointer-events: none; mix-blend-mode: screen; filter: blur(10px); }
 
         /* --- MODERN SCROLLING --- */
-        .scroller { overflow-y: auto; scrollbar-width: none; }
         .scroller::-webkit-scrollbar { width: 4px; }
-        .scroller::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        .scroller::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .scroller { scrollbar-width: none; overflow-y: auto; }
 
-        /* --- UI GLASSMISM --- */
-        .mac-window { background: #080808; border-radius: 35px; border: 1px solid #151515; box-shadow: 0 40px 100px rgba(0,0,0,0.8); height: 650px; position: relative; overflow: hidden; }
-        .node-card { background: #0c0c0c; border: 1px solid #1a1a1a; padding: 20px; border-radius: 22px; margin-bottom: 12px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .node-card:hover { border-color: var(--accent); background: #111; transform: translateY(-2px); }
+        /* --- GLASS UI --- */
+        .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; }
+        .mac-window { background: #000; border-radius: 40px; border: 1px solid #111; box-shadow: 0 0 50px rgba(0,0,0,1); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* --- THE FLOATING EXPORT BUTTON --- */
+        .btn-export-top {
+            background: linear-gradient(90deg, #ff0000, #ff4d4d);
+            padding: 12px 30px; border-radius: 100px; font-weight: 800; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 10px 20px rgba(255,0,0,0.3);
+            transition: 0.3s; cursor: pointer; border: none; z-index: 100;
+        }
+        .btn-export-top:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 15px 30px rgba(255,0,0,0.5); }
 
         /* --- INPUTS --- */
-        input, textarea { background: #0d0d0d !important; border: 1px solid #1a1a1a !important; color: #fff !important; border-radius: 15px !important; padding: 14px !important; width: 100%; font-size: 13px; }
-        input:focus { border-color: var(--accent) !important; box-shadow: 0 0 15px rgba(255,0,0,0.1); }
+        input, textarea { background: rgba(255,255,255,0.03) !important; border: 1px solid rgba(255,255,255,0.08) !important; color: #fff !important; border-radius: 15px !important; padding: 15px !important; transition: 0.3s; }
+        input:focus { border-color: var(--accent) !important; background: rgba(255,255,255,0.05) !important; }
 
-        /* --- FLOATING EXPORT BUTTON --- */
-        .export-tile {
-            background: linear-gradient(135deg, #ff0000, #800000);
-            padding: 20px; border-radius: 24px; font-weight: 900; text-align: center;
-            text-transform: uppercase; letter-spacing: 2px; font-size: 12px;
-            box-shadow: 0 10px 30px rgba(255,0,0,0.2); transition: 0.4s;
-        }
-        .export-tile:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255,0,0,0.4); filter: brightness(1.2); }
+        /* --- SWITCH --- */
+        .toggle-switch { width: 45px; height: 24px; appearance: none; background: #222; border-radius: 20px; position: relative; cursor: pointer; transition: 0.3s; }
+        .toggle-switch:checked { background: var(--accent); }
+        .toggle-switch::before { content: ''; position: absolute; width: 18px; height: 18px; background: #fff; border-radius: 50%; top: 3px; left: 3px; transition: 0.3s; }
+        .toggle-switch:checked::before { left: 24px; }
 
-        /* --- TAB RENAME OVERLAY --- */
-        #rename-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 10000; align-items: center; justify-content: center; }
-        .modal-box { background: #0f0f0f; padding: 40px; border-radius: 30px; border: 1px solid #222; width: 350px; }
+        /* --- ELEMENT CARDS --- */
+        .el-card { background: #080808; border: 1px solid #151515; border-radius: 20px; transition: 0.3s; cursor: pointer; }
+        .el-card:hover { border-color: var(--accent); transform: scale(1.02); }
+
+        #rename-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); z-index: 10000; align-items: center; justify-content: center; }
     </style>
 </head>
 <body class="flex">
 
-    <div id="rename-modal">
-        <div class="modal-box">
-            <h3 class="text-xs font-black uppercase text-zinc-500 mb-6 tracking-widest">Rename Element</h3>
-            <input type="text" id="rename-val" class="mb-6">
-            <div class="flex gap-3">
-                <button onclick="saveRename()" class="flex-1 bg-white text-black py-4 rounded-2xl font-black text-xs uppercase">Save</button>
+    <div id="rename-overlay">
+        <div class="glass-card p-10 w-[400px]">
+            <h3 class="text-xs font-bold uppercase tracking-[0.3em] text-red-600 mb-6">Rename Element</h3>
+            <input type="text" id="rename-input" class="w-full mb-6">
+            <div class="flex gap-4">
+                <button onclick="saveName()" class="flex-1 bg-white text-black py-4 rounded-2xl font-black text-xs uppercase">Confirm</button>
                 <button onclick="closeModal()" class="flex-1 bg-zinc-900 py-4 rounded-2xl font-black text-xs uppercase">Cancel</button>
             </div>
         </div>
     </div>
 
-    <aside class="w-80 bg-black border-r border-zinc-900 flex flex-col p-8 z-50">
+    <aside class="w-80 bg-black/50 border-r border-white/5 flex flex-col p-8 z-50">
         <div class="mb-12 flex items-center gap-4">
-            <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center font-black italic">D</div>
-            <h1 class="text-xl font-black italic">DARKZ <span class="text-red-600">V16</span></h1>
+            <div class="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(255,0,0,0.4)]">
+                <i class="fas fa-ghost text-xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tighter italic">DARKZ<span class="text-red-600">V17</span></h1>
         </div>
-        
-        <nav class="space-y-3 flex-1">
-            <button onclick="nav('build')" class="w-full text-left p-5 rounded-2xl bg-zinc-900 text-white font-bold text-xs uppercase tracking-tighter hover:bg-zinc-800 transition">Designer</button>
-            <button onclick="nav('sec')" class="w-full text-left p-5 rounded-2xl text-zinc-500 font-bold text-xs uppercase tracking-tighter hover:text-white transition">Protection</button>
-            <button onclick="nav('theme')" class="w-full text-left p-5 rounded-2xl text-zinc-500 font-bold text-xs uppercase tracking-tighter hover:text-white transition">Themes</button>
-        </nav>
 
-        <button onclick="compile()" class="export-tile w-full mt-auto">
-            <i class="fas fa-file-export mr-2"></i> Export Script
-        </button>
+        <nav class="space-y-4 flex-1">
+            <button onclick="nav('build')" class="w-full text-left p-5 rounded-3xl bg-white/5 text-white font-bold text-xs uppercase tracking-widest border border-white/5">Architect</button>
+            <button onclick="nav('sec')" class="w-full text-left p-5 rounded-3xl text-zinc-500 font-bold text-xs uppercase tracking-widest hover:text-white transition">Security</button>
+            <button onclick="nav('theme')" class="w-full text-left p-5 rounded-3xl text-zinc-500 font-bold text-xs uppercase tracking-widest hover:text-white transition">Cosmetics</button>
+        </nav>
+        
+        <div class="p-6 bg-red-600/5 rounded-3xl border border-red-600/10">
+            <p class="text-[10px] text-red-600 font-black uppercase mb-1">Status</p>
+            <p class="text-xs font-bold">V17 Stable Engine</p>
+        </div>
     </aside>
 
     <main class="flex-1 p-12 scroller">
         
         <div id="t-build" class="tab-content">
-            <div class="grid grid-cols-12 gap-12">
-                
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-xs font-black text-zinc-600 uppercase tracking-[0.5em]">Designer Workspace</h2>
+                <button onclick="compile()" class="btn-export-top"><i class="fas fa-bolt mr-2"></i> Export Script</button>
+            </div>
+
+            <div class="grid grid-cols-12 gap-10">
                 <div class="col-span-4 space-y-6">
-                    <div class="bg-zinc-950 p-8 rounded-[40px] border border-zinc-900 shadow-2xl">
-                        <input type="text" id="ui-name" oninput="updatePrev()" value="Darkz Hub" class="!text-2xl !font-black !bg-transparent !border-none !p-0 mb-1">
+                    <div class="glass-card p-8">
+                        <input type="text" id="ui-name" oninput="updatePrev()" value="Darkz Hub" class="!text-3xl !font-bold !bg-transparent !border-none !p-0 mb-2">
                         <input type="text" id="ui-author" oninput="updatePrev()" value="by .ftgs" class="!text-xs !text-zinc-500 !bg-transparent !border-none !p-0">
-                        
-                        <div class="mt-8 pt-6 border-t border-zinc-900 flex items-center justify-between">
-                            <span class="text-[10px] font-black uppercase text-zinc-400">Transparency</span>
-                            <input type="checkbox" id="ui-trans" checked onchange="updatePrev()" class="w-6 h-6 accent-red-600">
-                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
-                        <button onclick="add('Tab')" class="p-5 bg-zinc-900 rounded-2xl text-[10px] font-black uppercase hover:border-red-600 border border-transparent">Tab</button>
-                        <button onclick="add('Button')" class="p-5 bg-zinc-900 rounded-2xl text-[10px] font-black uppercase hover:border-red-600 border border-transparent">Button</button>
-                        <button onclick="add('Slider')" class="p-5 bg-zinc-900 rounded-2xl text-[10px] font-black uppercase hover:border-red-600 border border-transparent">Slider</button>
-                        <button onclick="add('Dropdown')" class="p-5 bg-zinc-900 rounded-2xl text-[10px] font-black uppercase hover:border-red-600 border border-transparent">Dropdown</button>
+                        <button onclick="add('Tab')" class="p-5 glass-card text-[10px] font-bold uppercase hover:bg-white hover:text-black transition">+ Tab</button>
+                        <button onclick="add('Button')" class="p-5 glass-card text-[10px] font-bold uppercase hover:bg-white hover:text-black transition">+ Button</button>
+                        <button onclick="add('Toggle')" class="p-5 glass-card text-[10px] font-bold uppercase hover:bg-white hover:text-black transition">+ Toggle</button>
+                        <button onclick="add('Slider')" class="p-5 glass-card text-[10px] font-bold uppercase hover:bg-white hover:text-black transition">+ Slider</button>
+                        <button onclick="add('Dropdown')" class="p-5 glass-card text-[10px] font-bold uppercase hover:bg-white hover:text-black transition">+ Drop</button>
                     </div>
 
-                    <div id="node-editor" class="bg-zinc-950 p-8 rounded-[40px] border border-zinc-800 hidden">
-                        <h3 class="text-[10px] font-black text-red-600 uppercase mb-6 tracking-widest">Element Settings</h3>
-                        <div id="editor-fields" class="space-y-5 max-h-[350px] overflow-y-auto pr-2 scroller"></div>
+                    <div id="node-editor" class="glass-card p-8 hidden border-red-600/20">
+                        <h3 class="text-[10px] font-bold text-red-600 uppercase mb-6">Live Properties</h3>
+                        <div id="editor-fields" class="space-y-6 max-h-[400px] scroller pr-2"></div>
                     </div>
                 </div>
 
                 <div class="col-span-8">
-                    <div id="prev-window" class="mac-window flex flex-col transition-all duration-700">
-                        <div class="p-10 border-b border-zinc-900/50 flex flex-col items-center">
-                            <span id="prev-window-name" class="text-4xl font-black italic uppercase tracking-tighter">Darkz Hub</span>
-                            <span id="prev-author-name" class="text-[10px] font-bold text-zinc-500 mt-2 uppercase tracking-[0.3em]">by .ftgs</span>
+                    <div id="prev-window" class="mac-window flex flex-col h-[650px]">
+                        <div class="p-12 border-b border-white/5 flex flex-col items-center">
+                            <span id="prev-window-name" class="text-5xl font-bold uppercase italic tracking-tighter">Darkz Hub</span>
+                            <span id="prev-author-name" class="text-xs font-bold text-zinc-500 mt-2 uppercase tracking-[0.4em]">by .ftgs</span>
                         </div>
                         <div class="flex flex-1 overflow-hidden">
-                            <div class="w-60 border-r border-zinc-900 p-6 space-y-3 scroller" id="prev-tabs"></div>
+                            <div class="w-64 border-r border-white/5 p-6 space-y-3 scroller" id="prev-tabs"></div>
                             <div class="flex-1 p-12 scroller" id="prev-content"></div>
                         </div>
                     </div>
-                    <p class="mt-4 text-[10px] text-zinc-600 text-center uppercase font-black">Double-click a tab to rename it instantly</p>
                 </div>
             </div>
         </div>
 
-        <div id="t-theme" class="tab-content hidden grid grid-cols-3 gap-6"></div>
-
-        <div id="t-sec" class="tab-content hidden flex justify-center items-center h-[60vh]">
-            <div class="bg-zinc-950 p-12 rounded-[50px] border border-zinc-900 w-full max-w-md text-center">
-                <i class="fas fa-fingerprint text-4xl text-red-600 mb-6"></i>
-                <h3 class="text-xl font-black uppercase mb-8">Script Lock</h3>
-                <input type="text" id="key-val" placeholder="Custom Key" class="mb-4 text-center">
-                <input type="text" id="key-url" placeholder="Key System Link" class="text-center">
+        <div id="t-sec" class="tab-content hidden flex justify-center pt-20">
+            <div class="glass-card p-12 w-full max-w-lg text-center">
+                <i class="fas fa-shield-halved text-5xl text-red-600 mb-8"></i>
+                <h3 class="text-2xl font-bold uppercase mb-10">Protection Suite</h3>
+                
+                <div class="flex items-center justify-between bg-black/40 p-6 rounded-3xl border border-white/5 mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest">Master Key System</span>
+                    <input type="checkbox" id="key-master" class="toggle-switch">
+                </div>
+                
+                <div id="key-settings" class="space-y-4 opacity-50 pointer-events-none transition-all">
+                    <input type="text" id="key-string" placeholder="Static Key" class="w-full text-center">
+                    <input type="text" id="key-link" placeholder="Discord/Key Link" class="w-full text-center">
+                </div>
             </div>
         </div>
+
+        <div id="t-theme" class="tab-content hidden grid grid-cols-4 gap-6"></div>
 
         <div id="t-export" class="tab-content hidden h-full">
-            <div class="bg-zinc-950 rounded-[40px] border border-zinc-900 h-full flex flex-col overflow-hidden">
-                <div class="p-8 flex justify-between items-center bg-black/50 backdrop-blur-md">
-                    <span class="text-xs font-black text-red-600 uppercase">Production Source</span>
-                    <button onclick="copyFinal()" class="bg-white text-black px-10 py-4 rounded-2xl text-xs font-black uppercase hover:scale-105 transition">Copy Code</button>
+            <div class="glass-card h-full flex flex-col overflow-hidden">
+                <div class="p-8 flex justify-between items-center border-b border-white/5">
+                    <span class="text-xs font-bold text-red-600 uppercase tracking-widest">Compiled Source Code</span>
+                    <button onclick="copyFinal()" class="bg-white text-black px-10 py-4 rounded-full text-xs font-black uppercase">Copy to Clipboard</button>
                 </div>
-                <textarea id="source-out" readonly class="flex-1 p-12 bg-black font-mono text-sm text-red-500 outline-none scroller"></textarea>
+                <textarea id="source-out" readonly class="flex-1 p-12 bg-black/20 font-mono text-sm text-red-500 outline-none scroller"></textarea>
             </div>
         </div>
 
@@ -150,13 +167,18 @@
         let editingId = null;
 
         const themeData = [
-            { n: "Dark", c: "#ff0000", b: "#080808" },
-            { n: "Aqua", c: "#00ffff", b: "#001a1a" },
-            { n: "Emerald", c: "#10b981", b: "#051a05" },
-            { n: "Violet", c: "#a855f7", b: "#15001a" },
-            { n: "Amber", c: "#f59e0b", b: "#1a1500" },
-            { n: "Rose", c: "#f43f5e", b: "#1a050a" }
+            { n: "Dark", c: "#ff0000", b: "#000000" },
+            { n: "Aqua", c: "#00ffff", b: "#001010" },
+            { n: "Lime", c: "#00ff00", b: "#001000" },
+            { n: "Rose", c: "#fb7185", b: "#100005" }
         ];
+
+        // MASTER TOGGLE LOGIC
+        document.getElementById('key-master').onchange = function() {
+            const set = document.getElementById('key-settings');
+            if(this.checked) { set.classList.remove('opacity-50', 'pointer-events-none'); }
+            else { set.classList.add('opacity-50', 'pointer-events-none'); }
+        };
 
         function nav(id) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
@@ -168,9 +190,9 @@
             const grid = document.getElementById('t-theme'); grid.innerHTML = '';
             themeData.forEach(t => {
                 const card = document.createElement('div');
-                card.className = `p-10 rounded-[30px] border-2 cursor-pointer transition-all ${scriptTheme === t.n ? 'border-white scale-105' : 'border-zinc-900'}`;
-                card.style.background = t.b;
-                card.innerHTML = `<span class="font-black uppercase text-[10px]" style="color:${t.c}">${t.n}</span>`;
+                card.className = `p-10 glass-card text-center cursor-pointer transition-all ${scriptTheme === t.n ? 'border-red-600 bg-red-600/10' : ''}`;
+                card.style.color = t.c;
+                card.innerHTML = `<span class="font-bold uppercase text-[10px]">${t.n}</span>`;
                 card.onclick = () => {
                     scriptTheme = t.n;
                     document.documentElement.style.setProperty('--accent', t.c);
@@ -183,41 +205,10 @@
 
         function add(type) {
             const id = Date.now();
-            const el = { id, type, title: `New ${type}`, desc: "Enter description...", code: '-- Your Lua Code Here\nprint("Executed")', tabId: activeTab, min: 0, max: 100, def: 50, options: "Option 1, Option 2" };
+            const el = { id, type, title: `New ${type}`, desc: "Element description goes here", code: '-- Lua Code\nprint("Executed")', tabId: activeTab, min: 0, max: 100, def: 50, options: "Option 1, Option 2" };
             if(type === 'Tab') { el.tabId = id; activeTab = id; }
             elements.push(el);
             updatePrev();
-        }
-
-        function updatePrev() {
-            const name = document.getElementById('ui-name').value;
-            const auth = document.getElementById('ui-author').value;
-            document.getElementById('prev-window-name').innerText = name;
-            document.getElementById('prev-author-name').innerText = auth;
-            document.getElementById('prev-window').style.opacity = document.getElementById('ui-trans').checked ? "0.85" : "1";
-            
-            const tList = document.getElementById('prev-tabs'); tList.innerHTML = '';
-            const cList = document.getElementById('prev-content'); cList.innerHTML = '';
-
-            elements.filter(x => x.type === 'Tab').forEach(t => {
-                const d = document.createElement('div');
-                d.className = `p-4 rounded-2xl text-[10px] font-black uppercase cursor-pointer transition-all ${activeTab === t.id ? 'bg-white text-black translate-x-2' : 'text-zinc-600 hover:text-white'}`;
-                d.innerHTML = `<div class="flex justify-between"><span>${t.title}</span><i onclick="deleteNode(${t.id})" class="fas fa-trash-alt opacity-20 hover:opacity-100"></i></div>`;
-                d.onclick = (e) => { if(e.target.tagName !== 'I') { activeTab = t.id; updatePrev(); } };
-                d.ondblclick = () => openRename(t.id);
-                tList.appendChild(d);
-            });
-
-            if(activeTab) {
-                elements.filter(x => x.tabId === activeTab && x.type !== 'Tab').forEach(e => {
-                    const d = document.createElement('div');
-                    d.id = `node-${e.id}`;
-                    d.className = "node-card flex justify-between items-center cursor-pointer";
-                    d.onclick = (evt) => { if(evt.target.tagName !== 'I') openEditor(e.id); };
-                    d.innerHTML = `<div><p class="text-[8px] font-black text-red-600 uppercase mb-1">${e.type}</p><h4 class="font-bold text-sm italic">${e.title}</h4></div><i onclick="deleteNode(${e.id})" class="fas fa-minus-circle text-zinc-800"></i>`;
-                    cList.appendChild(d);
-                });
-            }
         }
 
         function openEditor(id) {
@@ -227,26 +218,23 @@
             const fields = document.getElementById('editor-fields');
             editor.classList.remove('hidden');
             fields.innerHTML = `
-                <input type="text" value="${el.title}" oninput="updateNode(${id}, 'title', this.value)" placeholder="Title">
-                <textarea oninput="updateNode(${id}, 'desc', this.value)" placeholder="Description">${el.desc}</textarea>
-                <textarea class="h-40 font-mono text-[11px]" oninput="updateNode(${id}, 'code', this.value)">${el.code}</textarea>
+                <div><label class="text-[8px] uppercase font-black text-zinc-500 mb-2 block">Display Name</label><input type="text" value="${el.title}" oninput="updateNode(${id}, 'title', this.value)"></div>
+                <div><label class="text-[8px] uppercase font-black text-zinc-500 mb-2 block">Description</label><textarea oninput="updateNode(${id}, 'desc', this.value)">${el.desc}</textarea></div>
+                <div><label class="text-[8px] uppercase font-black text-zinc-500 mb-2 block">Callback Logic</label><textarea class="h-40 font-mono text-xs" oninput="updateNode(${id}, 'code', this.value)">${el.code}</textarea></div>
             `;
             if(el.type === 'Slider') {
                 fields.innerHTML += `
-                    <div class="grid grid-cols-3 gap-3">
+                    <div class="grid grid-cols-3 gap-4">
                         <input type="number" value="${el.min}" oninput="updateNode(${id}, 'min', this.value)" placeholder="Min">
                         <input type="number" value="${el.max}" oninput="updateNode(${id}, 'max', this.value)" placeholder="Max">
                         <input type="number" value="${el.def}" oninput="updateNode(${id}, 'def', this.value)" placeholder="Def">
                     </div>`;
             }
             if(el.type === 'Dropdown') {
-                fields.innerHTML += `<textarea oninput="updateNode(${id}, 'options', this.value)" placeholder="Options (Comma Separated)">${el.options}</textarea>`;
+                fields.innerHTML += `<div><label class="text-[8px] uppercase font-black text-zinc-500 mb-2 block">Options</label><textarea oninput="updateNode(${id}, 'options', this.value)">${el.options}</textarea></div>`;
             }
         }
 
-        function openRename(id) { editingId = id; document.getElementById('rename-modal').style.display = 'flex'; document.getElementById('rename-val').value = elements.find(x => x.id === id).title; }
-        function closeModal() { document.getElementById('rename-modal').style.display = 'none'; }
-        function saveRename() { elements.find(x => x.id === editingId).title = document.getElementById('rename-val').value; updatePrev(); closeModal(); }
         function updateNode(id, k, v) { const el = elements.find(x => x.id === id); if(el) el[k] = v; updatePrev(); }
 
         function deleteNode(id) {
@@ -262,20 +250,49 @@
                 if(activeTab === id) activeTab = null;
                 updatePrev(); hole.remove();
                 document.getElementById('node-editor').classList.add('hidden');
-            }, 1000);
+            }, 800);
         }
 
-        function compile() {
-            const name = document.getElementById('ui-name').value;
-            const auth = document.getElementById('ui-author').value;
-            const trans = document.getElementById('ui-trans').checked;
-            const key = document.getElementById('key-val').value;
-
-            let lua = `local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()\n\n`;
-            lua += `local Window = WindUI:CreateWindow({\n    Title = "${name}",\n    Author = "${auth}",\n    Theme = "${scriptTheme}",\n    Transparent = ${trans}\n})\n\n`;
+        function updatePrev() {
+            document.getElementById('prev-window-name').innerText = document.getElementById('ui-name').value;
+            document.getElementById('prev-author-name').innerText = document.getElementById('ui-author').value;
             
-            if(key) {
-                lua += `Window:KeySystem({\n    KeyValidator = function(val)\n        return val == "${key}"\n    end,\n    URL = "${document.getElementById('key-url').value}",\n    SaveKey = true\n})\n\n`;
+            const tList = document.getElementById('prev-tabs'); tList.innerHTML = '';
+            const cList = document.getElementById('prev-content'); cList.innerHTML = '';
+
+            elements.filter(x => x.type === 'Tab').forEach(t => {
+                const d = document.createElement('div');
+                d.id = `node-${t.id}`;
+                d.className = `p-5 rounded-3xl text-[10px] font-bold uppercase cursor-pointer transition-all ${activeTab === t.id ? 'bg-white text-black translate-x-3' : 'text-zinc-500 hover:text-white'}`;
+                d.innerHTML = `<div class="flex justify-between"><span>${t.title}</span><i onclick="deleteNode(${t.id})" class="fas fa-times-circle opacity-20 hover:opacity-100"></i></div>`;
+                d.onclick = (e) => { if(e.target.tagName !== 'I') { activeTab = t.id; updatePrev(); } };
+                d.ondblclick = () => openRename(t.id);
+                tList.appendChild(d);
+            });
+
+            if(activeTab) {
+                elements.filter(x => x.tabId === activeTab && x.type !== 'Tab').forEach(e => {
+                    const d = document.createElement('div');
+                    d.id = `node-${e.id}`;
+                    d.className = "el-card p-6 mb-4 flex justify-between items-center";
+                    d.onclick = (evt) => { if(evt.target.tagName !== 'I') openEditor(e.id); };
+                    d.innerHTML = `<div><p class="text-[7px] font-black text-red-600 uppercase mb-1">${e.type}</p><h4 class="font-bold text-sm italic">${e.title}</h4></div><i onclick="deleteNode(${e.id})" class="fas fa-trash text-zinc-900 hover:text-red-600 transition"></i>`;
+                    cList.appendChild(d);
+                });
+            }
+        }
+
+        function openRename(id) { editingId = id; document.getElementById('rename-overlay').style.display = 'flex'; document.getElementById('rename-input').value = elements.find(x => x.id === id).title; }
+        function closeModal() { document.getElementById('rename-overlay').style.display = 'none'; }
+        function saveName() { elements.find(x => x.id === editingId).title = document.getElementById('rename-input').value; updatePrev(); closeModal(); }
+
+        function compile() {
+            const keyOn = document.getElementById('key-master').checked;
+            let lua = `local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()\n\n`;
+            lua += `local Window = WindUI:CreateWindow({\n    Title = "${document.getElementById('ui-name').value}",\n    Author = "${document.getElementById('ui-author').value}",\n    Theme = "${scriptTheme}",\n    Transparent = true\n})\n\n`;
+            
+            if(keyOn) {
+                lua += `Window:KeySystem({\n    KeyValidator = function(val)\n        return val == "${document.getElementById('key-string').value}"\n    end,\n    URL = "${document.getElementById('key-link').value}",\n    SaveKey = true\n})\n\n`;
             }
 
             elements.filter(x => x.type === 'Tab').forEach(t => {
@@ -284,7 +301,7 @@
                 elements.filter(x => x.tabId === t.id && x.type !== 'Tab').forEach(e => {
                     lua += `${tVar}:${e.type}({\n    Title = "${e.title}",\n    Desc = "${e.desc}",\n`;
                     if(e.type === 'Slider') lua += `    Min = ${e.min}, Max = ${e.max}, Default = ${e.def},\n`;
-                    if(e.type === 'Dropdown') lua += `    Options = {${e.options.split(',').map(o => '"'+o.trim()+'"').join(', ')}},\n`;
+                    if(e.type === 'Dropdown') lua += `    Options = {${e.options.split(',').map(o=>'"'+o.trim()+'"').join(', ')}},\n`;
                     lua += `    Callback = function(value)\n        ${e.code.replace(/\n/g, '\n        ')}\n    end\n})\n\n`;
                 });
             });
@@ -297,4 +314,4 @@
         updatePrev();
     </script>
 </body>
-                    </html>
+</html>
