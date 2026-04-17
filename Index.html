@@ -3,102 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DARKZ | WINDUI V31</title>
+    <title>DARKZ | V32</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap');
         
-        :root { --accent: #ff0000; --bg: #010101; --vs-bg: #1e1e1e; }
+        :root { --bg: #000000; --border: #222222; --vs-bg: #0a0a0a; }
         body { background: var(--bg); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh; overflow: hidden; margin: 0; }
 
-        .scroller::-webkit-scrollbar { width: 4px; }
-        .scroller::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .scroller::-webkit-scrollbar { width: 3px; }
+        .scroller::-webkit-scrollbar-thumb { background: #333; }
         .scroller { scrollbar-width: none; overflow-y: auto; }
 
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; }
-        .mac-window { background: #000; border-radius: 40px; border: 1px solid #111; box-shadow: 0 40px 100px rgba(0,0,0,1); position: relative; }
+        /* MONO UI COMPONENTS */
+        .mono-card { background: #000; border: 1px solid var(--border); border-radius: 0px; }
+        .btn-mono { border: 1px solid #fff; padding: 10px 20px; font-weight: 800; font-size: 11px; text-transform: uppercase; cursor: pointer; transition: 0.2s; background: transparent; color: #fff; }
+        .btn-mono:hover { background: #fff; color: #000; }
+
+        /* GITHUB RAW - PURE B&W */
+        #github-raw { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; padding: 40px; flex-direction: column; }
+        .gh-box { border: 1px solid #333; flex: 1; display: flex; flex-direction: column; }
+        .gh-head { border-bottom: 1px solid #333; padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; }
+
+        /* VSCODE PAD - ACCURATE UI */
+        #vscode-pad { background: #0a0a0a; flex: 1; display: flex; border: 1px solid #222; position: relative; }
+        .vs-activity-bar { width: 50px; background: #000; border-right: 1px solid #222; display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 25px; color: #555; }
+        .vs-sidebar { width: 200px; background: #050505; border-right: 1px solid #222; padding: 20px; }
+        .vs-gutter { width: 50px; background: #0a0a0a; color: #333; text-align: right; padding-right: 15px; padding-top: 20px; font-family: 'JetBrains Mono'; font-size: 14px; border-right: 1px solid #1a1a1a; }
+        .vs-editor { flex: 1; padding: 20px; overflow-y: auto; font-family: 'JetBrains Mono'; color: #ccc; font-size: 14px; line-height: 1.6; }
         
-        .btn-main { background: linear-gradient(135deg, var(--accent), #770000); padding: 12px 24px; border-radius: 100px; font-weight: 800; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; }
+        .pad-block { margin-bottom: 20px; padding: 10px; border: 1px solid transparent; white-space: pre; position: relative; }
+        .edit-active .pad-block { border: 1px dashed #333; cursor: move; }
+        .edit-active .pad-block:hover { background: #111; border-color: #fff; }
 
-        /* GITHUB RAW MODAL */
-        #github-raw { display: none; position: fixed; inset: 0; background: #0d1117; z-index: 99999; padding: 40px; flex-direction: column; }
-        .gh-border { border: 1px solid #30363d; border-radius: 6px; flex: 1; display: flex; flex-direction: column; background: #0d1117; }
-        .gh-head { background: #161b22; padding: 12px; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; }
-
-        /* VSCODE PAD */
-        #vscode-pad { background: var(--vs-bg); border-radius: 20px; flex: 1; display: flex; overflow: hidden; border: 1px solid #333; }
-        .vs-sidebar { width: 50px; background: #333; display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 20px; color: #858585; }
-        .vs-gutter { width: 45px; background: var(--vs-bg); color: #858585; text-align: right; padding-right: 10px; padding-top: 20px; font-family: 'JetBrains Mono'; font-size: 13px; border-right: 1px solid #333; }
-        .vs-code { flex: 1; padding: 20px; overflow-y: auto; font-family: 'JetBrains Mono'; color: #d4d4d4; }
-        
-        .pad-block { padding: 4px 10px; border: 1px solid transparent; white-space: pre; position: relative; font-size: 13px; }
-        .edit-active .pad-block { border: 1px dashed #444; cursor: move; }
-        .edit-active .pad-block:hover { background: #2a2d2e; }
-
-        #icon-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 100000; padding: 50px; flex-direction: column; }
+        #icon-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 100000; padding: 50px; flex-direction: column; }
     </style>
 </head>
 <body class="flex">
 
     <div id="icon-modal">
-        <div class="flex justify-between items-center mb-10">
-            <h2 class="text-4xl font-black italic uppercase">LUCIDE <span class="text-red-600">LIBRARY</span></h2>
-            <input type="text" id="icon-search" placeholder="Search icons..." class="w-1/3 bg-white/5 p-4 rounded-full border border-white/10 outline-none" oninput="renderIcons(this.value)">
-            <button onclick="closeIconModal()" class="btn-main">Close</button>
+        <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-5">
+            <h2 class="text-2xl font-black uppercase">LUCIDE LIBRARY</h2>
+            <input type="text" id="icon-search" placeholder="SEARCH ICONS..." class="bg-transparent border border-white/20 p-3 w-80 outline-none" oninput="renderIcons(this.value)">
+            <button onclick="closeIconModal()" class="btn-mono">CLOSE</button>
         </div>
-        <div class="flex-1 scroller glass p-10"><div class="grid grid-cols-10 gap-4" id="icon-container"></div></div>
+        <div class="flex-1 scroller"><div class="grid grid-cols-10 gap-2" id="icon-container"></div></div>
     </div>
 
     <div id="github-raw">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold">windui_export.lua</h3>
-            <button onclick="document.getElementById('github-raw').style.display='none'" class="btn-main">Exit Raw View</button>
+        <div class="flex justify-between items-center mb-5">
+            <h3 class="font-bold">EXPORT_RAW.LUA</h3>
+            <button onclick="document.getElementById('github-raw').style.display='none'" class="btn-mono">BACK</button>
         </div>
-        <div class="gh-border">
-            <div class="gh-head"><span class="text-xs text-zinc-500 uppercase font-bold">Raw Script Output</span></div>
-            <div id="raw-output" class="p-8 font-mono text-sm text-white white-space-pre overflow-auto flex-1 scroller"></div>
+        <div class="gh-box">
+            <div class="gh-head">
+                <span class="text-[10px] font-bold text-zinc-500">RAW FILE DATA</span>
+                <button onclick="copyRaw()" class="text-[10px] font-bold hover:text-white">COPY CONTENT</button>
+            </div>
+            <div id="raw-output" class="p-10 font-mono text-sm text-white white-space-pre overflow-auto flex-1 scroller"></div>
         </div>
     </div>
 
-    <aside class="w-80 bg-black border-r border-white/5 flex flex-col p-10">
-        <div class="mb-16"><h1 class="text-4xl font-black italic">DARKZ<span class="text-red-600">V31</span></h1></div>
-        <nav class="space-y-4 flex-1">
-            <button onclick="nav('build')" class="w-full text-left p-6 rounded-3xl bg-white/5 font-bold text-xs uppercase border border-white/10">Architect</button>
-            <button onclick="nav('pad')" class="w-full text-left p-6 rounded-3xl text-zinc-500 font-bold text-xs uppercase hover:text-white">The Pad</button>
+    <aside class="w-64 bg-black border-r border-[#222] flex flex-col p-8">
+        <h1 class="text-2xl font-black mb-12 tracking-tighter">DARKZ V32</h1>
+        <nav class="space-y-2 flex-1">
+            <button onclick="nav('build')" class="w-full text-left p-4 border border-white font-bold text-[10px] uppercase">Architect</button>
+            <button onclick="nav('pad')" class="w-full text-left p-4 border border-transparent text-zinc-500 font-bold text-[10px] uppercase hover:text-white">The Pad</button>
+            <button onclick="nav('theme')" class="w-full text-left p-4 border border-transparent text-zinc-500 font-bold text-[10px] uppercase hover:text-white">Themes</button>
         </nav>
-        <button onclick="exportToRaw()" class="btn-main w-full py-5 text-sm">Export Code</button>
+        <button onclick="exportToRaw()" class="btn-mono w-full mt-10">EXPORT CODE</button>
     </aside>
 
-    <main class="flex-1 p-16 scroller">
+    <main class="flex-1 p-12 scroller">
         <div id="t-build" class="tab-content">
-            <div class="flex justify-between items-end mb-12">
-                <h2 class="text-2xl font-black uppercase italic">Workspace</h2>
-                <button onclick="openIconFor('openbtn')" id="open-btn-display" class="btn-main bg-zinc-800 !from-zinc-800 !to-zinc-900">Icon: monitor</button>
+            <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-5">
+                <h2 class="text-lg font-black uppercase">Architectural Unit</h2>
+                <button onclick="openIconFor('openbtn')" id="open-btn-display" class="btn-mono">ICON: MONITOR</button>
             </div>
 
             <div class="grid grid-cols-12 gap-10">
                 <div class="col-span-4 space-y-6">
-                    <div class="glass p-8">
-                        <input type="text" id="ui-name" value="WindUI Hub" oninput="updatePrev()" class="w-full bg-transparent text-2xl font-bold outline-none">
+                    <input type="text" id="ui-name" value="WindUI Hub" oninput="updatePrev()" class="w-full bg-transparent border border-white/10 p-4 text-xl font-bold outline-none uppercase">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="add('Tab')" class="p-3 border border-white/10 text-[9px] font-bold uppercase hover:border-white">Tab</button>
+                        <button onclick="add('Section')" class="p-3 border border-white/10 text-[9px] font-bold uppercase hover:border-white">Section</button>
+                        <button onclick="add('Button')" class="p-3 border border-white/10 text-[9px] font-bold uppercase hover:border-white">Button</button>
+                        <button onclick="add('Toggle')" class="p-3 border border-white/10 text-[9px] font-bold uppercase hover:border-white">Toggle</button>
+                        <button onclick="add('Slider')" class="p-3 border border-white/10 text-[9px] font-bold uppercase hover:border-white">Slider</button>
+                        <button onclick="add('Dropdown')" class="p-3 border border-white/10 text-[9px] font-bold uppercase hover:border-white">Drop</button>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="add('Tab')" class="p-4 glass text-[10px] font-bold uppercase hover:bg-red-600 transition">Tab</button>
-                        <button onclick="add('Section')" class="p-4 glass text-[10px] font-bold uppercase hover:bg-red-600 transition">Section</button>
-                        <button onclick="add('Button')" class="p-4 glass text-[10px] font-bold uppercase hover:bg-red-600 transition">Button</button>
-                        <button onclick="add('Toggle')" class="p-4 glass text-[10px] font-bold uppercase hover:bg-red-600 transition">Toggle</button>
-                        <button onclick="add('Slider')" class="p-4 glass text-[10px] font-bold uppercase hover:bg-red-600 transition">Slider</button>
-                        <button onclick="add('Dropdown')" class="p-4 glass text-[10px] font-bold uppercase hover:bg-red-600 transition">Drop</button>
-                    </div>
-                    <div id="node-editor" class="glass p-8 hidden max-h-[300px] scroller"><div id="editor-fields" class="space-y-4"></div></div>
+
+                    <div id="node-editor" class="border border-white/10 p-6 hidden scroller max-h-[350px]"><div id="editor-fields" class="space-y-4"></div></div>
                 </div>
 
                 <div class="col-span-8">
-                    <div id="prev-window" class="mac-window h-[550px] flex flex-col overflow-hidden">
-                        <div class="p-10 border-b border-white/5 flex justify-center"><span id="prev-name" class="text-3xl font-black italic uppercase">WindUI Hub</span></div>
-                        <div class="flex-1 flex overflow-hidden">
-                            <div class="w-48 border-r border-white/5 p-4 space-y-2 scroller" id="prev-tabs"></div>
+                    <div class="border border-white/10 h-[500px] flex flex-col bg-black">
+                        <div class="p-8 border-b border-white/10 text-center font-black italic uppercase" id="prev-name">WINDUI HUB</div>
+                        <div class="flex-1 flex">
+                            <div class="w-40 border-r border-white/10 p-4 space-y-2" id="prev-tabs"></div>
                             <div class="flex-1 p-8 scroller" id="prev-content"></div>
                         </div>
                     </div>
@@ -107,18 +112,24 @@
         </div>
 
         <div id="t-pad" class="tab-content hidden h-full flex flex-col">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-black italic">THE <span class="text-red-600">PAD</span></h2>
-                <div class="flex gap-4">
-                    <button onclick="togglePadEdit()" id="pad-edit-btn" class="btn-main bg-orange-600 !from-orange-500 !to-orange-700">Edit Mode: OFF</button>
-                    <button onclick="generateBlocks()" class="btn-main bg-blue-600 !from-blue-500 !to-blue-700">Refresh Pad</button>
+            <div class="flex justify-between items-center mb-5">
+                <h2 class="text-xl font-black uppercase">CODE PAD</h2>
+                <div class="flex gap-2">
+                    <button onclick="togglePadEdit()" id="pad-edit-btn" class="btn-mono">EDIT: OFF</button>
+                    <button onclick="generateBlocks()" class="btn-mono">REFRESH</button>
                 </div>
             </div>
             <div id="vscode-pad">
-                <div class="vs-sidebar"><i class="fas fa-copy"></i><i class="fas fa-search"></i><i class="fas fa-cog mt-auto mb-6"></i></div>
+                <div class="vs-activity-bar"><i class="fas fa-file"></i><i class="fas fa-search"></i><i class="fas fa-cog mt-auto mb-5"></i></div>
+                <div class="vs-sidebar"><p class="text-[9px] font-bold text-zinc-500 uppercase">Explorer</p><p class="text-[11px] mt-4 text-white">main.lua</p></div>
                 <div class="vs-gutter" id="vs-gutter"></div>
-                <div class="vs-code scroller" id="vs-workspace"></div>
+                <div class="vs-editor scroller" id="vs-workspace"></div>
             </div>
+        </div>
+
+        <div id="t-theme" class="tab-content hidden">
+            <h2 class="text-xl font-black uppercase mb-10">System Themes</h2>
+            <div class="grid grid-cols-4 gap-2" id="official-theme-grid"></div>
         </div>
     </main>
 
@@ -127,24 +138,33 @@
         let padBlocks = [];
         let activeTab = null;
         let activeSection = null;
+        let currentTheme = "Dark";
         let openBtnIcon = "monitor";
         let iconTarget = null;
         let isPadEdit = false;
 
+        const officialThemes = ["Dark", "Light", "Rose", "Plant", "Sky", "Indigo", "Violet", "Amber", "Emerald", "Midnight", "Crimson", "Monokai Pro", "Cotton Candy", "Mellowsi", "Rainbow"];
+
         function nav(id) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
             document.getElementById('t-'+id).classList.remove('hidden');
+            if(id === 'theme') renderThemes();
         }
+
+        function renderThemes() {
+            const grid = document.getElementById('official-theme-grid'); grid.innerHTML = officialThemes.map(t => `<div class="p-6 border border-white/10 text-center text-[10px] font-bold uppercase cursor-pointer hover:bg-white hover:text-black" onclick="setTheme('${t}')">${t}</div>`).join('');
+        }
+        function setTheme(t) { currentTheme = t; alert("Theme: " + t); }
 
         function openIconFor(t) { iconTarget = t; document.getElementById('icon-modal').style.display='flex'; renderIcons(""); }
         function closeIconModal() { document.getElementById('icon-modal').style.display='none'; }
         function renderIcons(q) {
             const cont = document.getElementById('icon-container'); cont.innerHTML = '';
-            Object.keys(lucide.icons).filter(n => n.includes(q.toLowerCase())).slice(0, 300).forEach(name => {
-                const d = document.createElement('div'); d.className='p-4 glass text-center cursor-pointer hover:bg-red-600';
-                d.innerHTML = `<i data-lucide="${name}" style="margin:auto; width:20px"></i><p class="text-[7px] mt-2">${name}</p>`;
+            Object.keys(lucide.icons).filter(n => n.includes(q.toLowerCase())).slice(0, 200).forEach(name => {
+                const d = document.createElement('div'); d.className='p-4 border border-white/5 text-center cursor-pointer hover:bg-white hover:text-black transition';
+                d.innerHTML = `<i data-lucide="${name}" style="margin:auto; width:18px"></i>`;
                 d.onclick = () => {
-                    if(iconTarget === 'openbtn') { openBtnIcon = name; document.getElementById('open-btn-display').innerText = "Icon: "+name; }
+                    if(iconTarget === 'openbtn') { openBtnIcon = name; document.getElementById('open-btn-display').innerText = "ICON: "+name.toUpperCase(); }
                     else { elements.find(x => x.id === iconTarget).icon = name; }
                     closeIconModal(); updatePrev();
                 };
@@ -155,7 +175,7 @@
 
         function add(type) {
             const id = Date.now();
-            const el = { id, type, title: `New ${type}`, code: 'print("Executed")', tabId: activeTab, sectionId: (type === 'Section' ? null : activeSection), min: 0, max: 100, def: 50, options: "A, B", icon: "box" };
+            const el = { id, type, title: `NEW ${type}`, code: 'print("EXEC")', tabId: activeTab, sectionId: (type === 'Section' ? null : activeSection), min: 0, max: 100, def: 50, options: "Option 1, Option 2", icon: "box" };
             if(type === 'Tab') { el.tabId = id; activeTab = id; activeSection = null; }
             if(type === 'Section') { el.tabId = activeTab; activeSection = id; }
             elements.push(el); updatePrev();
@@ -167,16 +187,16 @@
             const cList = document.getElementById('prev-content'); cList.innerHTML = '';
             elements.filter(x => x.type === 'Tab').forEach(t => {
                 const d = document.createElement('div');
-                d.className = `p-3 rounded-xl text-[9px] font-bold uppercase cursor-pointer flex items-center gap-2 ${activeTab === t.id ? 'bg-white text-black' : 'text-zinc-500'}`;
+                d.className = `p-3 border ${activeTab === t.id ? 'bg-white text-black border-white' : 'border-white/10 text-zinc-500'} text-[8px] font-bold uppercase cursor-pointer flex items-center gap-2`;
                 d.innerHTML = `<i data-lucide="${t.icon}" style="width:12px"></i>${t.title}`;
                 d.onclick = () => { activeTab = t.id; activeSection = null; updatePrev(); openEditor(t.id); };
                 tList.appendChild(d);
             });
             if(activeTab) {
                 elements.filter(x => x.tabId === activeTab && x.type !== 'Tab').forEach(e => {
-                    const d = document.createElement('div'); d.className = `p-4 mb-2 glass rounded-2xl ${activeSection === e.id ? 'border-red-600' : ''}`;
-                    d.innerHTML = `<p class="text-[7px] text-red-600 font-bold uppercase">${e.type}</p><h4 class="font-bold text-xs">${e.title}</h4>`;
-                    if(e.sectionId) d.style.marginLeft = "20px";
+                    const d = document.createElement('div'); d.className = `p-4 mb-2 border ${activeSection === e.id ? 'border-white' : 'border-white/10'}`;
+                    d.innerHTML = `<p class="text-[7px] text-zinc-500 font-bold uppercase">${e.type}</p><h4 class="font-bold text-xs uppercase">${e.title}</h4>`;
+                    if(e.sectionId) d.style.marginLeft = "15px";
                     d.onclick = () => { if(e.type === 'Section') activeSection = e.id; openEditor(e.id); updatePrev(); };
                     cList.appendChild(d);
                 });
@@ -188,9 +208,20 @@
             const el = elements.find(x => x.id === id);
             const fields = document.getElementById('editor-fields');
             document.getElementById('node-editor').classList.remove('hidden');
-            fields.innerHTML = `<input type="text" value="${el.title}" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none" oninput="elements.find(x=>x.id===${id}).title=this.value; updatePrev()">`;
-            if(el.type === 'Tab') fields.innerHTML += `<button onclick="openIconFor(${id})" class="btn-main w-full !bg-zinc-800 !from-zinc-800 !to-zinc-900 mt-2">Select Icon</button>`;
-            if(el.type !== 'Tab' && el.type !== 'Section') fields.innerHTML += `<textarea class="w-full h-32 bg-white/5 p-4 rounded-xl font-mono text-xs mt-2" oninput="elements.find(x=>x.id===${id}).code=this.value">${el.code}</textarea>`;
+            fields.innerHTML = `<label class="text-[8px] font-bold text-zinc-500 uppercase">Label</label><input type="text" value="${el.title}" class="w-full bg-transparent border border-white/20 p-3 text-xs outline-none" oninput="elements.find(x=>x.id===${id}).title=this.value; updatePrev()">`;
+            
+            if(el.type === 'Slider') {
+                fields.innerHTML += `<div class="grid grid-cols-3 gap-2">
+                    <input type="number" value="${el.min}" placeholder="Min" class="bg-transparent border border-white/20 p-2 text-xs" oninput="elements.find(x=>x.id===${id}).min=this.value">
+                    <input type="number" value="${el.max}" placeholder="Max" class="bg-transparent border border-white/20 p-2 text-xs" oninput="elements.find(x=>x.id===${id}).max=this.value">
+                    <input type="number" value="${el.def}" placeholder="Def" class="bg-transparent border border-white/20 p-2 text-xs" oninput="elements.find(x=>x.id===${id}).def=this.value">
+                </div>`;
+            }
+            if(el.type === 'Dropdown') {
+                fields.innerHTML += `<label class="text-[8px] font-bold text-zinc-500 uppercase mt-4 block">Options (Comma Separated)</label><input type="text" value="${el.options}" class="w-full bg-transparent border border-white/20 p-3 text-xs" oninput="elements.find(x=>x.id===${id}).options=this.value">`;
+            }
+            if(el.type === 'Tab') fields.innerHTML += `<button onclick="openIconFor(${id})" class="btn-mono w-full mt-2">SELECT TAB ICON</button>`;
+            if(el.type !== 'Tab' && el.type !== 'Section') fields.innerHTML += `<label class="text-[8px] font-bold text-zinc-500 uppercase mt-4 block">Callback</label><textarea class="w-full h-24 bg-transparent border border-white/20 p-3 font-mono text-xs" oninput="elements.find(x=>x.id===${id}).code=this.value">${el.code}</textarea>`;
         }
 
         function buildFullLua(p, e) {
@@ -203,8 +234,8 @@
 
         function generateBlocks() {
             padBlocks = [];
-            padBlocks.push(`local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()\n\nlocal Window = WindUI:CreateWindow({\n    Title = "${document.getElementById('ui-name').value}",\n    Author = ".ftgs",\n    Theme = "Dark",\n    Transparent = true\n})`);
-            padBlocks.push(`Window:EditOpenButton({\n    Title = "Open UI",\n    Icon = "${openBtnIcon}",\n    CornerRadius = UDim.new(0, 16),\n    StrokeThickness = 2,\n    Color = ColorSequence.new(\n        Color3.fromHex("FF0F7B"),\n        Color3.fromHex("F89B29")\n    ),\n    OnlyMobile = false,\n    Enabled = true,\n    Draggable = true\n})`);
+            padBlocks.push(`local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()\n\nlocal Window = WindUI:CreateWindow({\n    Title = "${document.getElementById('ui-name').value}",\n    Author = ".ftgs",\n    Theme = "${currentTheme}",\n    Transparent = true\n})`);
+            padBlocks.push(`Window:EditOpenButton({\n    Title = "Open UI",\n    Icon = "${openBtnIcon}",\n    CornerRadius = UDim.new(0, 16),\n    StrokeThickness = 2,\n    Color = ColorSequence.new(\n        Color3.fromHex("FFFFFF"),\n        Color3.fromHex("000000")\n    ),\n    OnlyMobile = false,\n    Enabled = true,\n    Draggable = true\n})`);
             
             elements.filter(e => e.type === 'Tab').forEach(t => {
                 const tv = t.title.replace(/\s/g, '');
@@ -223,7 +254,7 @@
             const ws = document.getElementById('vs-workspace'); ws.innerHTML = '';
             padBlocks.forEach((b, i) => {
                 const div = document.createElement('div'); div.className = 'pad-block';
-                if(isPadEdit && i > 1) div.innerHTML = `<div class="absolute right-4 top-2 flex gap-4 text-zinc-600"><i onclick="moveBlock(${i},-1)" class="fas fa-arrow-up"></i><i onclick="moveBlock(${i},1)" class="fas fa-arrow-down"></i></div>`;
+                if(isPadEdit && i > 1) div.innerHTML = `<div class="absolute right-4 top-2 flex gap-4 text-zinc-700"><i onclick="moveBlock(${i},-1)" class="fas fa-arrow-up cursor-pointer"></i><i onclick="moveBlock(${i},1)" class="fas fa-arrow-down cursor-pointer"></i></div>`;
                 div.innerHTML += b; ws.appendChild(div);
             });
             let total = ws.innerText.split('\n').length;
@@ -231,12 +262,15 @@
         }
 
         function moveBlock(i, d) { if(!isPadEdit) return; const n = i+d; if(n<2 || n>=padBlocks.length) return; [padBlocks[i], padBlocks[n]] = [padBlocks[n], padBlocks[i]]; renderPad(); }
-        function togglePadEdit() { isPadEdit = !isPadEdit; document.getElementById('pad-edit-btn').innerText = `Edit Mode: ${isPadEdit ? 'ON' : 'OFF'}`; document.getElementById('vs-workspace').classList.toggle('edit-active', isPadEdit); renderPad(); }
+        function togglePadEdit() { isPadEdit = !isPadEdit; document.getElementById('pad-edit-btn').innerText = `EDIT: ${isPadEdit ? 'ON' : 'OFF'}`; document.getElementById('vs-workspace').classList.toggle('edit-active', isPadEdit); renderPad(); }
         
         function exportToRaw() {
+            if(padBlocks.length === 0) generateBlocks();
             document.getElementById('raw-output').innerText = padBlocks.join('\n\n');
             document.getElementById('github-raw').style.display = 'flex';
         }
+
+        function copyRaw() { navigator.clipboard.writeText(document.getElementById('raw-output').innerText); alert("COPIED."); }
 
         updatePrev();
     </script>
